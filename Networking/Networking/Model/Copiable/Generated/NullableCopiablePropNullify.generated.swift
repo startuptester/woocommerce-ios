@@ -1,7 +1,6 @@
 // Generated using Sourcery 0.17.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
-
 // The `.nullify` is an alias for `.some(nil)` which is used to set a `NullableCopiableProp`
 // property to `nil`. The `.nullify` alias can be used to provide more clarity.
 //
@@ -20,16 +19,7 @@
 // let us know!
 //
 
-
-extension NullableCopiableProp where Wrapped == Int? {
-    public static let nullify = Self.some(nil)
-}
-
 extension NullableCopiableProp where Wrapped == Date? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == ProductShippingClass? {
     public static let nullify = Self.some(nil)
 }
 
