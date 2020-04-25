@@ -60,6 +60,7 @@
 		45ED4F14239E8F2E004F1BE3 /* TaxClassRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45ED4F13239E8F2E004F1BE3 /* TaxClassRemoteTests.swift */; };
 		576F70CF2454D9710086B20B /* ProductImage+Copiable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F70CE2454D9700086B20B /* ProductImage+Copiable.generated.swift */; };
 		576F70D32454DABD0086B20B /* CopiableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F70D22454DABD0086B20B /* CopiableTests.swift */; };
+		576F70D52454DD740086B20B /* NullableCopiablePropNullify.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F70D42454DD740086B20B /* NullableCopiablePropNullify.generated.swift */; };
 		57BBE3D22454986F00EF4A0A /* Copiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57BBE3D12454986E00EF4A0A /* Copiable.swift */; };
 		57BE08D82409B63800F6DCED /* reviews-missing-avatar-urls.json in Resources */ = {isa = PBXBuildFile; fileRef = 57BE08D72409B63700F6DCED /* reviews-missing-avatar-urls.json */; };
 		6647C0161DAC6AB6570C53A7 /* Pods_Networking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3F25DC15EC1D7C631169CB5 /* Pods_Networking.framework */; };
@@ -385,6 +386,7 @@
 		573B448C242422DB00E71ADC /* orders-load-all-2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "orders-load-all-2.json"; sourceTree = "<group>"; };
 		576F70CE2454D9700086B20B /* ProductImage+Copiable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ProductImage+Copiable.generated.swift"; sourceTree = "<group>"; };
 		576F70D22454DABD0086B20B /* CopiableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopiableTests.swift; sourceTree = "<group>"; };
+		576F70D42454DD740086B20B /* NullableCopiablePropNullify.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NullableCopiablePropNullify.generated.swift; sourceTree = "<group>"; };
 		57BBE3D12454986E00EF4A0A /* Copiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Copiable.swift; sourceTree = "<group>"; };
 		57BE08D72409B63700F6DCED /* reviews-missing-avatar-urls.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "reviews-missing-avatar-urls.json"; sourceTree = "<group>"; };
 		6856D1228ADBC14D8202E49D /* XCTestCase+Wait.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Wait.swift"; sourceTree = "<group>"; };
@@ -708,6 +710,7 @@
 		576F70CD2454D9700086B20B /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				576F70D42454DD740086B20B /* NullableCopiablePropNullify.generated.swift */,
 				576F70CE2454D9700086B20B /* ProductImage+Copiable.generated.swift */,
 			);
 			path = Generated;
@@ -1653,6 +1656,7 @@
 				74D3BD142114FE6900A6E85E /* MIContainer.swift in Sources */,
 				B5BB1D1220A255EC00112D92 /* OrderStatusEnum.swift in Sources */,
 				B5DAEFF02180DD5A0002356A /* NotificationsRemote.swift in Sources */,
+				576F70D52454DD740086B20B /* NullableCopiablePropNullify.generated.swift in Sources */,
 				020D07BE23D8570800FD9580 /* MediaListMapper.swift in Sources */,
 				74C8F06820EEB7BD00B6EDC9 /* OrderNotesMapper.swift in Sources */,
 				4501068F2399B19500E24722 /* TaxClassRemote.swift in Sources */,

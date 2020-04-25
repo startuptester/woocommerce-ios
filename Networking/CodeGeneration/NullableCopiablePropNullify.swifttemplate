@@ -1,0 +1,22 @@
+<%# 
+//
+// Generates the `.nullify` static properties 
+//
+-%>
+
+<%# 
+// Generate .nullify for those types that are defined in the code 
+-%>
+<%
+let codeDefinedTypes = types.based["GeneratedNullableCopiablePropNullify"]
+-%>
+<% for type in codeDefinedTypes { -%>
+
+extension NullableCopiableProp where Wrapped == <%= type.name %>? {
+    public static let nullify = Self.some(nil)
+}
+
+extension NullableCopiableProp where Wrapped == Array<<%= type.name %>>? {
+    public static let nullify = Self.some(nil)
+}
+<% } -%>
