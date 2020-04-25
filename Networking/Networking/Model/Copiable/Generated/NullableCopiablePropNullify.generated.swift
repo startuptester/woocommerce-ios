@@ -2,12 +2,26 @@
 // DO NOT EDIT
 
 
+// The `.nullify` is an alias for `.some(nil)` which is used to set a `NullableCopiableProp`
+// property to `nil`. The `.nullify` alias can be used to provide more clarity.
+//
+// ## Why Does This Have to be Generated?
+//
+// Unlike the `.copy` alias, this has to be generated as there doesn't seem to be a way to
+// make this code pattern generic:
+//
+// ```
+// extension NullableCopiable where Wrapped == String? {
+//    public static let nullify = Self.some(nil)
+// }
+// ```
+//
+// If you can find a way to write that like the `static var copy` implementation, then please
+// let us know!
+//
 
-extension NullableCopiableProp where Wrapped == Bool? {
-    public static let nullify = Self.some(nil)
-}
 
-extension NullableCopiableProp where Wrapped == Array<Bool>? {
+extension NullableCopiableProp where Wrapped == Int? {
     public static let nullify = Self.some(nil)
 }
 
@@ -15,70 +29,10 @@ extension NullableCopiableProp where Wrapped == Date? {
     public static let nullify = Self.some(nil)
 }
 
-extension NullableCopiableProp where Wrapped == Array<Date>? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Decimal? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Array<Decimal>? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Int? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Array<Int>? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Int16? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Array<Int16>? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Int32? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Array<Int32>? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Int64? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Array<Int64>? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Int8? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Array<Int8>? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == NSDecimalNumber? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Array<NSDecimalNumber>? {
+extension NullableCopiableProp where Wrapped == ProductShippingClass? {
     public static let nullify = Self.some(nil)
 }
 
 extension NullableCopiableProp where Wrapped == String? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Array<String>? {
     public static let nullify = Self.some(nil)
 }

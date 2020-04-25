@@ -4,19 +4,40 @@
 //
 -%>
 
-<%# 
-// Generate .nullify for those types that are defined in the code 
--%>
+// The `.nullify` is an alias for `.some(nil)` which is used to set a `NullableCopiableProp`
+// property to `nil`. The `.nullify` alias can be used to provide more clarity.
+//
+// ## Why Does This Have to be Generated?
+//
+// Unlike the `.copy` alias, this has to be generated as there doesn't seem to be a way to
+// make this code pattern generic:
+//
+// ```
+// extension NullableCopiable where Wrapped == String? {
+//    public static let nullify = Self.some(nil)
+// }
+// ```
+//
+// If you can find a way to write that like the `static var copy` implementation, then please
+// let us know!
+//
+
 <%
-let codeDefinedTypes = types.based["GeneratedNullableCopiablePropNullify"]
+let typeNamesToGenerate = Set(types.implementing["GeneratedCopiable"].filter {
+    $0.kind == "struct"
+}.flatMap { type in
+    type.variables.filter { variable in
+        variable.readAccess == type.accessLevel &&
+            variable.isOptional &&
+            !variable.isComputed &&
+            !variable.isStatic
+    }
+}.map(\.typeName.unwrappedTypeName).sorted())
+
 -%>
-<% for type in codeDefinedTypes { -%>
+<% for typeName in typeNamesToGenerate { -%>
 
-extension NullableCopiableProp where Wrapped == <%= type.name %>? {
-    public static let nullify = Self.some(nil)
-}
-
-extension NullableCopiableProp where Wrapped == Array<<%= type.name %>>? {
+extension NullableCopiableProp where Wrapped == <%= typeName %>? {
     public static let nullify = Self.some(nil)
 }
 <% } -%>
