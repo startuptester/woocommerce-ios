@@ -28,16 +28,17 @@ struct CopiableSpec {
 let specsToGenerate: [CopiableSpec] = types.implementing["GeneratedCopiable"].filter {
     $0.kind == "struct"
 }.map { type in
-    let propSpecs: [CopiableSpec.Property] = type.variables.filter {
+    let validVariables = type.variables.filter {
         $0.readAccess == type.accessLevel &&
             !$0.isComputed &&
             !$0.isStatic
-    }.enumerated().map { (index, variable) in 
+    }
+    let propSpecs: [CopiableSpec.Property] = validVariables.map { variable in 
         CopiableSpec.Property(
             name: variable.name, 
             typeName: variable.typeName.unwrappedTypeName,
             copiablePropTypeName: variable.isOptional ? "NullableCopiableProp" : "CopiableProp",
-            commaOrNothing: index + 1 == type.variables.count ? "" : ","
+            commaOrNothing: variable == validVariables.last  ? "" : ","
         )
     }
 
