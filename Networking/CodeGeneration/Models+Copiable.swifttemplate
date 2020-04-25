@@ -1,38 +1,73 @@
+<%# 
+//
+// Generates .copy methods for all structs conforming to the `GeneratedCopiable` protocol
+//
+-%>
 <%
-let typesToGenerate = types.implementing["GeneratedCopiable"].filter {
+// Create our own data structure to clarify what we need in the template code below. 
+// And also so there are less loops and code in the template code.
+
+/// A Copiable struct type that should be generated.
+struct CopiableSpec {
+    struct Property {
+        let name: String
+        /// String, Int, etc 
+        let typeName: String
+        /// NullableCopiableProp or CopiableProp
+        let copiablePropTypeName: String
+        /// If this is not the last, this will be a literal comma (",")
+        let commaOrNothing: String
+    }
+
+    let name: String
+    /// "public", "private", etc.
+    let accessLevel: String
+    let properties: [Property]
+}
+
+let specsToGenerate: [CopiableSpec] = types.implementing["GeneratedCopiable"].filter {
     $0.kind == "struct"
+}.map { type in
+    let propSpecs: [CopiableSpec.Property] = type.variables.filter {
+        $0.readAccess == type.accessLevel &&
+            !$0.isComputed &&
+            !$0.isStatic
+    }.enumerated().map { (index, variable) in 
+        CopiableSpec.Property(
+            name: variable.name, 
+            typeName: variable.typeName.unwrappedTypeName,
+            copiablePropTypeName: variable.isOptional ? "NullableCopiableProp" : "CopiableProp",
+            commaOrNothing: index + 1 == type.variables.count ? "" : ","
+        )
+    }
+
+    return CopiableSpec(name: type.name, accessLevel: type.accessLevel, properties: propSpecs)
 }
+
 %>
-<% for type in typesToGenerate { %>
-// sourcery:file:<%= type.name %>+Copiable
 
-extension <%= type.name %> {
-<%
-let props = type.variables.filter {
-    $0.readAccess == type.accessLevel &&
-        !$0.isComputed &&
-        !$0.isStatic
-}
--%>
-    <%= type.accessLevel %> func copy(
-<% for prop in props { -%>
-<%
-let copiablePropTypeName = prop.isOptional ? "NullableCopiableProp" : "CopiableProp"
-let commaOrNothing = props.last == prop ? "" : ","
--%>
-        <%= prop.name %>: <%= copiablePropTypeName %><<%= prop.typeName.unwrappedTypeName %>> = .copy<%= commaOrNothing %>
+<% for copiableSpec in specsToGenerate { %>
+// sourcery:file:<%= copiableSpec.name %>+Copiable
+
+extension <%= copiableSpec.name %> {
+    <%= copiableSpec.accessLevel %> func copy(
+<% for propertySpec in copiableSpec.properties { -%>
+        <%= propertySpec.name %>: <%= propertySpec.copiablePropTypeName %><<%= propertySpec.typeName %>> = .copy<%= propertySpec.commaOrNothing %>
 <% } -%>
-    ) -> <%= type.name %> {
-<% for prop in props { -%>
-        let <%= prop.name %> = <%= prop.name %> ?? self.<%= prop.name %>
+    ) -> <%= copiableSpec.name %> {
+<%# 
+// Generate `let propName = propName ?? self.propName` lines
+// 
+// We declare local variables first because if if we immediately call the initializer,
+// Swift will fail to compile because of _code complexity_.
+-%>
+<% for propertySpec in copiableSpec.properties { -%>
+        let <%= propertySpec.name %> = <%= propertySpec.name %> ?? self.<%= propertySpec.name %>
 <% } -%>
 
-        return <%= type.name %>(
-<% for prop in props { -%>
-<%
-let commaOrNothing = props.last == prop ? "" : ","
--%>
-            <%= prop.name %>: <%= prop.name %><%= commaOrNothing %>
+        return <%= copiableSpec.name %>(
+<% for propertySpec in copiableSpec.properties { -%>
+            <%= propertySpec.name %>: <%= propertySpec.name %><%= propertySpec.commaOrNothing %>
 <% } -%>
         )
     }
