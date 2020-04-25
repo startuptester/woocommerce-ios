@@ -37,7 +37,7 @@ extension CopiableProp {
     /// Using `.copy` makes it a bit more clearer what will happen if you don't declare or
     /// provide a different value.
     ///
-    static var copy: Wrapped? {
+    public static var copy: Wrapped? {
         nil
     }
 }
