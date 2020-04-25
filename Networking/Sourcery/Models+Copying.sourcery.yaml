@@ -2,6 +2,8 @@ project:
     file: ../Networking.xcodeproj
     target: 
         name: Networking
+prune: true
 templates:
     - Models+Copying.stencil
+    - CopiablePropTypes.swifttemplate
 output: ../Networking/Model/Copying/Generated

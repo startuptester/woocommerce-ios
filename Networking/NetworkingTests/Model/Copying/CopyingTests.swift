@@ -65,7 +65,7 @@ final class CopyingTests: XCTestCase {
         XCTAssertEqual(copy.alt, "_alt_copy_")
     }
 
-    func testItCanSetNonNilPropertiesBackToNil() {
+    func testItCanSetNonNilPropertiesBackToNilUsingSomeNil() {
         // Given
         let original = ProductImage(
             imageID: 1_000,
@@ -78,6 +78,24 @@ final class CopyingTests: XCTestCase {
 
         // When
         let copy = original.copy(name: .some(nil))
+
+        // Then
+        XCTAssertNil(copy.name)
+    }
+
+    func testItCanSetNonNilPropertiesBackToNilUsingNullify() {
+        // Given
+        let original = ProductImage(
+            imageID: 1_000,
+            dateCreated: Date(timeIntervalSince1970: 900),
+            dateModified: Date(timeIntervalSince1970: 700),
+            src: "_src_original_",
+            name: "_name_original_",
+            alt: "_alt_original"
+        )
+
+        // When
+        let copy = original.copy(name: .nullify)
 
         // Then
         XCTAssertNil(copy.name)

@@ -1,0 +1,21 @@
+<%
+let copiablePropTypes = types.based["GeneratedCopiablePropType"]
+
+let decodableTypes = types.structs.filter {
+    $0.accessLevel == "public" && 
+        ($0.based["Codable"] != nil || $0.based["Decodable"] != nil)
+}
+
+let typesToGenerate = copiablePropTypes + decodableTypes
+%>
+<% for type in typesToGenerate { %>
+// MARK: - <%= type.name %>
+
+extension NullableCopiable where Wrapped == <%= type.name %>? {
+    public static let nullify = Self.some(nil)
+}
+
+extension NullableCopiable where Wrapped == Array<<%= type.name %>>? {
+    public static let nullify = Self.some(nil)
+}
+<% } %>
