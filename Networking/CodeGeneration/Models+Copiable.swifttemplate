@@ -1,0 +1,42 @@
+<%
+let typesToGenerate = types.implementing["GeneratedCopiable"].filter {
+    $0.kind == "struct"
+}
+%>
+<% for type in typesToGenerate { %>
+// sourcery:file:<%= type.name %>+Copiable
+
+extension <%= type.name %> {
+<%
+let props = type.variables.filter {
+    $0.readAccess == type.accessLevel &&
+        !$0.isComputed &&
+        !$0.isStatic
+}
+-%>
+    <%= type.accessLevel %> func copy(
+<% for prop in props { -%>
+<%
+let copiablePropTypeName = prop.isOptional ? "NullableCopiableProp" : "CopiableProp"
+let commaOrNothing = props.last == prop ? "" : ","
+-%>
+        <%= prop.name %>: <%= copiablePropTypeName %><<%= prop.typeName.unwrappedTypeName %>> = .copy<%= commaOrNothing %>
+<% } -%>
+    ) -> <%= type.name %> {
+<% for prop in props { -%>
+        let <%= prop.name %> = <%= prop.name %> ?? self.<%= prop.name %>
+<% } -%>
+
+        return <%= type.name %>(
+<% for prop in props { -%>
+<%
+let commaOrNothing = props.last == prop ? "" : ","
+-%>
+            <%= prop.name %>: <%= prop.name %><%= commaOrNothing %>
+<% } -%>
+        )
+    }
+}
+
+// sourcery:end
+<% } %>
