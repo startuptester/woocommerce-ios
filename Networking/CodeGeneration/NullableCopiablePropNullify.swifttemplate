@@ -3,7 +3,6 @@
 // Generates the `.nullify` static properties 
 //
 -%>
-
 // The `.nullify` is an alias for `.some(nil)` which is used to set a `NullableCopiableProp`
 // property to `nil`. The `.nullify` alias can be used to provide more clarity.
 //
@@ -21,7 +20,6 @@
 // If you can find a way to write that like the `static var copy` implementation, then please
 // let us know!
 //
-
 <%
 let typeNamesToGenerate = Set(types.implementing["GeneratedCopiable"].filter {
     $0.kind == "struct"
@@ -32,7 +30,7 @@ let typeNamesToGenerate = Set(types.implementing["GeneratedCopiable"].filter {
             !variable.isComputed &&
             !variable.isStatic
     }
-}.map(\.typeName.unwrappedTypeName).sorted())
+}.map(\.typeName.unwrappedTypeName)).sorted()
 
 -%>
 <% for typeName in typeNamesToGenerate { -%>
