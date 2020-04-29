@@ -18,10 +18,10 @@ final class FilterListViewController2<ViewModel: FilterListViewModel>: UIViewCon
 
     private let viewModel: ViewModel
 
+    private lazy var listSelectorCommand = FilterListCommand(data: viewModel.cellViewModels)
     private lazy var listSelectorViewController: FilterListSelectorViewController = {
-        let command = FilterListCommand(data: viewModel.cellViewModels)
-        return ListSelectorViewController(command: command, onDismiss: { selected in
-
+        ListSelectorViewController(command: listSelectorCommand, onDismiss: { selected in
+            // noop
         })
     }()
 
@@ -29,6 +29,8 @@ final class FilterListViewController2<ViewModel: FilterListViewModel>: UIViewCon
         let title = NSLocalizedString("Clear all", comment: "Button title for clearing all filters for the list.")
         return UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(clearAllButtonTapped))
     }()
+
+    private var cancellable: ObservationToken?
 
     init(viewModel: ViewModel) {
         self.viewModel = viewModel
@@ -39,12 +41,17 @@ final class FilterListViewController2<ViewModel: FilterListViewModel>: UIViewCon
         fatalError("init(coder:) has not been implemented")
     }
 
+    deinit {
+        cancellable?.cancel()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configureMainView()
         configureNavigation()
         configureChildNavigationController()
+        observeListSelectorCommandItemSelection()
     }
 
     @objc private func dismissButtonTapped() {
@@ -55,11 +62,17 @@ final class FilterListViewController2<ViewModel: FilterListViewModel>: UIViewCon
 
     }
 
+    private func observeListSelectorCommandItemSelection() {
+        cancellable = listSelectorCommand.onItemSelected.subscribe { [weak self] selected in
+            print("selected")
+        }
+    }
+
     private func configureMainView() {
         view.backgroundColor = .listBackground
     }
 
-    func configureNavigation() {
+    private func configureNavigation() {
         let dismissButtonTitle = NSLocalizedString("Dismiss", comment: "Button title for dismissing filtering a list.")
         listSelectorViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(title: dismissButtonTitle,
                                                                                       style: .plain,
@@ -103,6 +116,11 @@ private extension FilterListViewController2 {
 
         let data: [FilterListCellViewModel]
 
+        private let onItemSelectedSubject = PublishSubject<FilterListCellViewModel>()
+        var onItemSelected: Observable<FilterListCellViewModel> {
+            onItemSelectedSubject
+        }
+
         init(data: [FilterListCellViewModel]) {
             self.data = data
         }
@@ -112,7 +130,7 @@ private extension FilterListViewController2 {
         }
 
         func handleSelectedChange(selected: FilterListCellViewModel, viewController: ViewController) {
-
+            onItemSelectedSubject.send(selected)
         }
 
         func configureCell(cell: SettingTitleAndValueTableViewCell, model: FilterListCellViewModel) {
