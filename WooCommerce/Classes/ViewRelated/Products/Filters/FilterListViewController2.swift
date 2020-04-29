@@ -3,7 +3,13 @@ import Foundation
 import UIKit
 
 protocol FilterListViewModel {
+    // TODO This can be BehaviorSubject<[FilterListCellViewModel]>
+    var cellViewModels: [FilterListCellViewModel] { get }
+}
 
+struct FilterListCellViewModel: Equatable {
+    let title: String
+    let value: String
 }
 
 final class FilterListViewController2<ViewModel: FilterListViewModel>: UIViewController {
@@ -12,7 +18,13 @@ final class FilterListViewController2<ViewModel: FilterListViewModel>: UIViewCon
 
     private let viewModel: ViewModel
 
-    private lazy var listSelectorViewController = UIViewController()
+    private lazy var listSelectorViewController: ListSelectorViewController<FilterListCommand, FilterListCommand.Model, FilterListCommand.Cell> = {
+        let command = FilterListCommand(data: viewModel.cellViewModels)
+        return ListSelectorViewController(command: command, onDismiss: { selected in
+
+        })
+    }()
+
     private lazy var clearAllBarButtonItem: UIBarButtonItem = {
         let title = NSLocalizedString("Clear all", comment: "Button title for clearing all filters for the list.")
         return UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(clearAllButtonTapped))
@@ -75,6 +87,43 @@ final class FilterListViewController2<ViewModel: FilterListViewModel>: UIViewCon
     }
 }
 
-final class ProductFilterListViewModel: FilterListViewModel {
+private extension FilterListViewController2 {
+    final class FilterListCommand: ListSelectorCommand {
+        typealias Cell = SettingTitleAndValueTableViewCell
+        typealias Model = FilterListCellViewModel
 
+        // TODO Implement
+        let navigationBarTitle: String? = "Filters"
+        // TODO Implement
+        let selected: FilterListCellViewModel? = nil
+
+        let data: [FilterListCellViewModel]
+
+        init(data: [FilterListCellViewModel]) {
+            self.data = data
+        }
+
+        func isSelected(model: FilterListCellViewModel) -> Bool {
+            selected == model
+        }
+
+        func handleSelectedChange(selected: FilterListCellViewModel, viewController: ViewController) {
+
+        }
+
+        func configureCell(cell: SettingTitleAndValueTableViewCell, model: FilterListCellViewModel) {
+            cell.selectionStyle = .default
+            cell.updateUI(title: model.title, value: model.value)
+        }
+    }
+}
+
+// MARK: - Products Specific
+
+final class ProductFilterListViewModel: FilterListViewModel {
+    let cellViewModels: [FilterListCellViewModel] = [
+        FilterListCellViewModel(title: "Stock status", value: "Any"),
+        FilterListCellViewModel(title: "Product status", value: "Any"),
+        FilterListCellViewModel(title: "Product type", value: "Any"),
+    ]
 }
