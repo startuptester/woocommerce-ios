@@ -18,7 +18,7 @@ final class FilterListViewController2<ViewModel: FilterListViewModel>: UIViewCon
 
     private let viewModel: ViewModel
 
-    private lazy var listSelectorViewController: ListSelectorViewController<FilterListCommand, FilterListCommand.Model, FilterListCommand.Cell> = {
+    private lazy var listSelectorViewController: FilterListSelectorViewController = {
         let command = FilterListCommand(data: viewModel.cellViewModels)
         return ListSelectorViewController(command: command, onDismiss: { selected in
 
@@ -87,7 +87,11 @@ final class FilterListViewController2<ViewModel: FilterListViewModel>: UIViewCon
     }
 }
 
+// MARK: - Main Table Implementation
+
 private extension FilterListViewController2 {
+    typealias FilterListSelectorViewController = ListSelectorViewController<FilterListCommand, FilterListCommand.Model, FilterListCommand.Cell>
+
     final class FilterListCommand: ListSelectorCommand {
         typealias Cell = SettingTitleAndValueTableViewCell
         typealias Model = FilterListCellViewModel
