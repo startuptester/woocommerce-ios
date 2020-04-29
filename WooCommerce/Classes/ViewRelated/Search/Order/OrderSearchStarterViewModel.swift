@@ -14,24 +14,6 @@ final class OrderSearchStarterViewModel {
     private let siteID: Int64
     private let storageManager: StorageManagerType
 
-    /// The `ViewModel` containing only the data used by the displayed cell.
-    ///
-    struct CellViewModel {
-        let name: String?
-        let slug: String
-
-        /// The total displayed on the right side.
-        ///
-        /// If this is above 99, this will be “99+”.
-        let total: String
-
-        /// The source `OrderStatus` used to create this `ViewModel`.
-        ///
-        /// This should only be used for initializing `OrdersViewController`.
-        ///
-        let orderStatus: OrderStatus
-    }
-
     private lazy var resultsController: ResultsController<StorageOrderStatus> = {
         let descriptor = NSSortDescriptor(key: "slug", ascending: true)
         let predicate = NSPredicate(format: "siteID == %lld", siteID)
@@ -79,16 +61,9 @@ extension OrderSearchStarterViewModel {
         resultsController.numberOfObjects
     }
 
-    /// The `CellViewModel` located at `indexPath`.
+    /// The `OrderStatus` located at `indexPath`.
     ///
-    func cellViewModel(at indexPath: IndexPath) -> CellViewModel {
-        let orderStatus = resultsController.object(at: indexPath)
-
-        let total = NumberFormatter.localizedOrNinetyNinePlus(orderStatus.total)
-
-        return CellViewModel(name: orderStatus.name,
-                             slug: orderStatus.slug,
-                             total: total,
-                             orderStatus: orderStatus)
+    func orderStatus(at indexPath: IndexPath) -> OrderStatus {
+        resultsController.object(at: indexPath)
     }
 }
