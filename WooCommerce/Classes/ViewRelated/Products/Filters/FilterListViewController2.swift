@@ -1,10 +1,24 @@
 
 import Foundation
 import UIKit
+import Yosemite
 
 protocol FilterListViewModel {
     // TODO This can be BehaviorSubject<[FilterListCellViewModel]>
     var cellViewModels: [FilterListCellViewModel] { get }
+
+    func valueSelectorConfig(for cellViewModel: FilterListCellViewModel) -> FilterListValueSelectorConfig
+}
+
+protocol FilterListValueSelectorStaticOption {
+    var name: String { get }
+}
+
+enum FilterListValueSelectorConfig {
+    // Standard
+    case staticOptions([FilterListValueSelectorStaticOption])
+    // Example: Categories
+    case custom
 }
 
 struct FilterListCellViewModel: Equatable {
@@ -64,7 +78,19 @@ final class FilterListViewController2<ViewModel: FilterListViewModel>: UIViewCon
 
     private func observeListSelectorCommandItemSelection() {
         cancellable = listSelectorCommand.onItemSelected.subscribe { [weak self] selected in
-            print("selected")
+            guard let self = self else {
+                return
+            }
+
+            let valueSelectorConfig = self.viewModel.valueSelectorConfig(for: selected)
+            switch valueSelectorConfig {
+            case .staticOptions(let options):
+                // TODO This is just an example. We should use a List Selector that accepts generic data
+                let staticListSelector = UIViewController()
+                self.listSelectorViewController.navigationController?.pushViewController(staticListSelector, animated: true)
+            case .custom:
+                break
+            }
         }
     }
 
@@ -100,7 +126,7 @@ final class FilterListViewController2<ViewModel: FilterListViewModel>: UIViewCon
     }
 }
 
-// MARK: - Main Table Implementation
+// MARK: - Child List Selector Table
 
 private extension FilterListViewController2 {
     typealias FilterListSelectorViewController = ListSelectorViewController<FilterListCommand, FilterListCommand.Model, FilterListCommand.Cell>
@@ -142,10 +168,26 @@ private extension FilterListViewController2 {
 
 // MARK: - Products Specific
 
+extension ProductStockStatus: FilterListValueSelectorStaticOption {
+    var name: String {
+        self.description
+    }
+}
+
 final class ProductFilterListViewModel: FilterListViewModel {
     let cellViewModels: [FilterListCellViewModel] = [
         FilterListCellViewModel(title: "Stock status", value: "Any"),
         FilterListCellViewModel(title: "Product status", value: "Any"),
         FilterListCellViewModel(title: "Product type", value: "Any"),
     ]
+
+    func valueSelectorConfig(for cellViewModel: FilterListCellViewModel) -> FilterListValueSelectorConfig {
+        let options: [ProductStockStatus] = [
+            .inStock,
+            .outOfStock,
+            .onBackOrder
+        ]
+
+        return FilterListValueSelectorConfig.staticOptions(options)
+    }
 }
