@@ -340,6 +340,7 @@
 		6856D49DB7DCF4D87745C0B1 /* MockPushNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6856D249FD1702FE3864950A /* MockPushNotificationsManager.swift */; };
 		6856D806DE7DB61522D54044 /* NSMutableAttributedStringHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6856D7981E11F85D5E4EFED7 /* NSMutableAttributedStringHelperTests.swift */; };
 		6856DB2E741639716E149967 /* KeyboardStateProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6856D02484A69911F2B91714 /* KeyboardStateProvider.swift */; };
+		6856DC0A06AE98A94EB85930 /* FilterListViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6856D47ECCC2D16532FEB141 /* FilterListViewController2.swift */; };
 		6856DE479EC3B2265AC1F775 /* Calendar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6856D66A1963092C34D20674 /* Calendar+Extensions.swift */; };
 		6856DF20E1BDCC391635F707 /* AgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6856D1A5F72A36AB3704D19D /* AgeTests.swift */; };
 		74036CC0211B882100E462C2 /* PeriodDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74036CBF211B882100E462C2 /* PeriodDataViewController.swift */; };
@@ -1174,6 +1175,7 @@
 		6856D1A5F72A36AB3704D19D /* AgeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgeTests.swift; sourceTree = "<group>"; };
 		6856D249FD1702FE3864950A /* MockPushNotificationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockPushNotificationsManager.swift; sourceTree = "<group>"; };
 		6856D3846BBF078CB5D955B9 /* KeyboardFrameAdjustmentProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardFrameAdjustmentProvider.swift; sourceTree = "<group>"; };
+		6856D47ECCC2D16532FEB141 /* FilterListViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterListViewController2.swift; sourceTree = "<group>"; };
 		6856D66A1963092C34D20674 /* Calendar+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Calendar+Extensions.swift"; sourceTree = "<group>"; };
 		6856D7981E11F85D5E4EFED7 /* NSMutableAttributedStringHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedStringHelperTests.swift; sourceTree = "<group>"; };
 		6856DCE1638958DA296D690F /* KeyboardStateProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardStateProviderTests.swift; sourceTree = "<group>"; };
@@ -2195,6 +2197,7 @@
 				02C8876B24501FAC00E4470F /* FilterListViewController.swift */,
 				02C8876C24501FAC00E4470F /* FilterListViewController.xib */,
 				02C88774245036D400E4470F /* FilterProductListCommand.swift */,
+				6856D47ECCC2D16532FEB141 /* FilterListViewController2.swift */,
 			);
 			path = Filters;
 			sourceTree = "<group>";
@@ -4837,6 +4840,7 @@
 				45D1CF4523BAC2A500945A36 /* ProductTaxClassListSelectorDataSource.swift in Sources */,
 				6856D31F941A33BAE66F394D /* KeyboardFrameAdjustmentProvider.swift in Sources */,
 				6856DB2E741639716E149967 /* KeyboardStateProvider.swift in Sources */,
+				6856DC0A06AE98A94EB85930 /* FilterListViewController2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
