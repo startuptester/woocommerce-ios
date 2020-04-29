@@ -459,7 +459,9 @@ private extension ProductsViewController {
 
     @objc func filterButtonTapped() {
         let viewModel = ProductFilterListViewModel()
-        let filterListViewController = FilterListViewController2(viewModel: viewModel)
+        let filterListViewController = FilterListViewController2(viewModel: viewModel) { [weak self] criteria in
+            print(criteria)
+        }
 
         present(filterListViewController, animated: true)
 

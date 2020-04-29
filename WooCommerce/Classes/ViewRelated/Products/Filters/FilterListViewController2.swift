@@ -4,8 +4,13 @@ import UIKit
 import Yosemite
 
 protocol FilterListViewModel {
+    associatedtype Criteria
+
     // TODO This can be BehaviorSubject<[FilterListCellViewModel]>
     var cellViewModels: [FilterListCellViewModel] { get }
+
+    // The value passed to the caller of FilterListViewController2 (onCompletion)
+    var criteria: Criteria { get }
 
     func valueSelectorConfig(for cellViewModel: FilterListCellViewModel) -> FilterListValueSelectorConfig
 }
@@ -46,8 +51,11 @@ final class FilterListViewController2<ViewModel: FilterListViewModel>: UIViewCon
 
     private var cancellable: ObservationToken?
 
-    init(viewModel: ViewModel) {
+    private let onCompletion: (ViewModel.Criteria?) -> ()
+
+    init(viewModel: ViewModel, onCompletion: @escaping (ViewModel.Criteria?) -> ()) {
         self.viewModel = viewModel
+        self.onCompletion = onCompletion
         super.init(nibName: "FilterListViewController", bundle: nil)
     }
 
@@ -69,7 +77,8 @@ final class FilterListViewController2<ViewModel: FilterListViewModel>: UIViewCon
     }
 
     @objc private func dismissButtonTapped() {
-
+        onCompletion(nil)
+        dismiss(animated: true)
     }
 
     @objc private func clearAllButtonTapped() {
@@ -168,6 +177,12 @@ private extension FilterListViewController2 {
 
 // MARK: - Products Specific
 
+struct ProductFilterCriteria {
+    let stockStatus: ProductStockStatus?
+    let productStatus: ProductStatus?
+    let productType: ProductType?
+}
+
 extension ProductStockStatus: FilterListValueSelectorStaticOption {
     var name: String {
         self.description
@@ -175,11 +190,18 @@ extension ProductStockStatus: FilterListValueSelectorStaticOption {
 }
 
 final class ProductFilterListViewModel: FilterListViewModel {
+    typealias Criteria = ProductFilterCriteria
+
     let cellViewModels: [FilterListCellViewModel] = [
         FilterListCellViewModel(title: "Stock status", value: "Any"),
         FilterListCellViewModel(title: "Product status", value: "Any"),
         FilterListCellViewModel(title: "Product type", value: "Any"),
     ]
+
+    // TODO Should be a stored mutated value
+    var criteria: Criteria {
+        ProductFilterCriteria(stockStatus: nil, productStatus: nil, productType: nil)
+    }
 
     func valueSelectorConfig(for cellViewModel: FilterListCellViewModel) -> FilterListValueSelectorConfig {
         let options: [ProductStockStatus] = [
