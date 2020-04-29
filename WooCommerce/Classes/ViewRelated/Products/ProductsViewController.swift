@@ -458,12 +458,17 @@ private extension ProductsViewController {
     }
 
     @objc func filterButtonTapped() {
-        let command = FilterProductListCommand(sourceViewController: self, filters: filters) { [weak self] filters in
-            self?.filters = filters
-            // TODO-2037: filter products based on the filters
-        }
-        let filterProductListViewController = FilterListViewController(command: command)
-        present(filterProductListViewController, animated: true, completion: nil)
+        let viewModel = ProductFilterListViewModel()
+        let filterListViewController = FilterListViewController2(viewModel: viewModel)
+
+        present(filterListViewController, animated: true)
+
+//        let command = FilterProductListCommand(sourceViewController: self, filters: filters) { [weak self] filters in
+//            self?.filters = filters
+//            // TODO-2037: filter products based on the filters
+//        }
+//        let filterProductListViewController = FilterListViewController(command: command)
+//        present(filterProductListViewController, animated: true, completion: nil)
     }
 }
 
