@@ -13,6 +13,9 @@ protocol FilterListViewModel {
     var criteria: Criteria { get }
 
     func valueSelectorConfig(for cellViewModel: FilterListCellViewModel) -> FilterListValueSelectorConfig
+
+    // Reset the criteria
+    func clearAll()
 }
 
 protocol FilterListValueSelectorStaticOption {
@@ -211,5 +214,10 @@ final class ProductFilterListViewModel: FilterListViewModel {
         ]
 
         return FilterListValueSelectorConfig.staticOptions(options)
+    }
+
+    func clearAll() {
+        // TODO update self.criteria
+        // TODO update cellViewModels based on self.criteria
     }
 }
