@@ -11,6 +11,12 @@ final class MockPushNotificationsManager: PushNotesManager {
 
     private let foregroundNotificationsSubject = PublishSubject<ForegroundNotification>()
 
+    var inactiveNotifications: Observable<ForegroundNotification> {
+        inactiveNotificationsSubject
+    }
+
+    private let inactiveNotificationsSubject = PublishSubject<ForegroundNotification>()
+
     func resetBadgeCount() {
 
     }
