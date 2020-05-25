@@ -8,6 +8,8 @@ extension Alamofire.MultipartFormData: MultipartFormData {}
 ///
 public class AlamofireNetwork: Network {
 
+    /// The background session is a shared instance per app launch, otherwise the session is invalidated when `AlamofireNetwork` is initialized again after the
+    /// first time.
     private static let backgroundSessionManager: Alamofire.SessionManager = {
         let configuration = URLSessionConfiguration.background(withIdentifier: "com.automattic.woocommerce.backgroundsession")
         return SessionManager(configuration: configuration)
