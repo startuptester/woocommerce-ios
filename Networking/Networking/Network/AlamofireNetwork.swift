@@ -8,7 +8,10 @@ extension Alamofire.MultipartFormData: MultipartFormData {}
 ///
 public class AlamofireNetwork: Network {
 
-    private let backgroundSessionManager: Alamofire.SessionManager
+    private static let backgroundSessionManager: Alamofire.SessionManager = {
+        let configuration = URLSessionConfiguration.background(withIdentifier: "com.automattic.woocommerce.backgroundsession")
+        return SessionManager(configuration: configuration)
+    }()
 
     /// WordPress.com Credentials.
     ///
@@ -19,8 +22,6 @@ public class AlamofireNetwork: Network {
     ///
     public required init(credentials: Credentials) {
         self.credentials = credentials
-        let configuration = URLSessionConfiguration.background(withIdentifier: "com.automattic.woocommerce.backgroundsession")
-        self.backgroundSessionManager = Alamofire.SessionManager(configuration: configuration)
     }
 
     /// Executes the specified Network Request. Upon completion, the payload will be sent back to the caller as a Data instance.
@@ -69,7 +70,7 @@ public class AlamofireNetwork: Network {
                                         completion: @escaping (Data?, Error?) -> Void) {
         let authenticated = AuthenticatedRequest(credentials: credentials, request: request)
 
-        backgroundSessionManager.upload(multipartFormData: multipartFormData, with: authenticated) { (encodingResult) in
+        AlamofireNetwork.backgroundSessionManager.upload(multipartFormData: multipartFormData, with: authenticated) { (encodingResult) in
             switch encodingResult {
             case .success(let upload, _, _):
                 upload.responseData { response in
